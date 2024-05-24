@@ -1,10 +1,34 @@
-<h1>My Watch Lists</h1>
-<div>
-  <ul>
-    <% @lists.each do |list| %>
-      <li><%= link_to list.name, list_path(list) %></li>
+<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
+  <div class="container-fluid">
+    <%= link_to "/lists", class: "navbar-brand" do %>
+      <div><i class="fa-solid fa-film"></i></div>
     <% end %>
-  </ul>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+         <li class="btn btn-primary"><%= link_to "Create New", new_list_path %></li>
+      </ul>
+    </div>
+  </div>
 </div>
 
-<%= link_to "Create New", new_list_path %>
+
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h1 class="display-4 font-weight-bold">My Watch Lists</h1>
+    <p class="lead">Explore your curated movie lists</p>
+  </div>
+  <div class="row g-4">
+    <% @lists.each do |list| %>
+      <div class="col-md-6 col-lg-4">
+        <div class="card-category card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path list.photo.key, height: 300, crop: :fill %>')">
+          <div class="card-body d-flex flex-column justify-content-end">
+            <h5 class="card-title text-center">
+              <%= link_to list.name, list_path(list), class: 'stretched-link text-decoration-none text-white' %>
+            </h5>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

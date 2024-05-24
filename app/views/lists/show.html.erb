@@ -1,33 +1,45 @@
-<h1><%= @list.name %></h1>
-<div>
-  <ul>
-    <% @bookmarks.each do |bookmark| %>
-      <li>
-        <strong>Movie:</strong><%= bookmark.movie.title %><br>
-        <strong>Comment:</strong><%= bookmark.comment %>
-        <%= link_to "🗑️", bookmark_path(bookmark),
-      data: {turbo_method: :delete, turbo_confirm: "Do you really want to delete this bookmark?"} %>
-      </li>
-      </li>
+<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
+  <div class="container-fluid">
+    <%= link_to "/lists", class: "navbar-brand" do %>
+      <div><i class="fa-solid fa-arrow-left"></i></div>
     <% end %>
-  </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Additional navbar content can go here -->
+    </div>
+  </div>
 </div>
 
-<h2>Add Bookmark</h2>
-
-<%= simple_form_for [@list, @bookmark], url: list_bookmarks_path(@list), html: { class: 'form-horizontal' } do |f| %>
-  <div class="form-group">
-    <%= f.input :movie_id, collection: Movie.all.collect { |m| [m.title, m.id] }, label: 'Movie', input_html: { class: 'form-control' } %>
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h1 class="display-4 font-weight-bold"><%= @list.name %></h1>
+    <p class="lead">Explore the movies in this list</p>
   </div>
-
-  <div class="form-group">
-    <%= f.input :comment, label: 'Comment', input_html: { class: 'form-control' } %>
+  <div class="row g-4">
+    <% @bookmarks.each do |bookmark| %>
+      <div class="col-md-6 col-lg-4">
+        <div class="card">
+          <img class="card-img-top" src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %> poster">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-center"><%= bookmark.movie.title %></h5>
+            <p class="card-text text-center"><%= bookmark.comment %></p>
+            <%= link_to "🗑️ Delete", bookmark_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Do you really want to delete this bookmark?" }, class: 'btn btn-danger mt-auto' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
-
-  <div class="form-group">
-    <%= f.button :submit, 'Create Bookmark', class: 'btn btn-primary' %>
+  <div class="mt-5">
+    <h2>Add Bookmark</h2>
+    <%= simple_form_for [@list, @bookmark], url: list_bookmarks_path(@list), html: { class: 'form-horizontal' } do |f| %>
+      <div class="form-group">
+        <%= f.input :movie_id, collection: Movie.all.collect { |m| [m.title, m.id] }, label: 'Movie', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="form-group">
+        <%= f.input :comment, label: 'Comment', input_html: { class: 'form-control' } %>
+      </div>
+      <div class="form-group">
+        <%= f.button :submit, 'Create Bookmark', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-<%= link_to "Back to All", root_path %>
-<%# <%= link_to "Add Bookmark", list_bookmark_path %>
+</div>
